@@ -35,8 +35,8 @@ public class GameManager : MonoBehaviour
             for (int i = 0; i < howManyBoxCreate; i++)
                 Instantiate(boxPandora, new Vector3(Random.Range(0f, 248f), Random.Range(1.5f, 3f), Random.Range(0, 246f)), Quaternion.identity);
             Debug.Log("Is Instant: "+ howManyBoxCreate +" box");
-            Screen.lockCursor = true;
-            Cursor.visible = false;
+            //Screen.lockCursor = true;
+            //Cursor.visible = false;
             isInstantiate = false;
         }
 

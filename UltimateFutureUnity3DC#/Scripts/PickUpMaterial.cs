@@ -4,31 +4,27 @@ using UnityEngine;
 
 public class PickUpMaterial : MonoBehaviour
 {
-    [SerializeField] private HandController hanController=null;
-    
-
+    [SerializeField] private HandController hanController=null;   
     [SerializeField] private Sprite spritePickUpObject=null;
-    [SerializeField] private float idItem;
+    [SerializeField] private GameObject prefabPickUp = null;
+
+    [SerializeField] private bool isPistol = false;
+    [SerializeField] private bool isRifle = false;
+
     private void OnTriggerEnter(Collider other)
     {
         if (other.tag=="Player")
         {
             if (this.tag=="Gun")
             {
-                Debug.Log("Pick up Gun");
-                PlayerController player = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>();
-                MeshRenderer objcGun = GetComponent<MeshRenderer>();
-                player.HandWithGun.SetActive(true);
-                player.IsGun = 1;
-                hanController = GameObject.FindGameObjectWithTag("Hand").GetComponent<HandController>();
-                hanController.ChangeMaterialGun(objcGun.sharedMaterial);
+                InventoryController inventoryController = GameObject.Find("Canvas/InventoryPanel").GetComponent<InventoryController>();
+                inventoryController.SetItem(spritePickUpObject, 1, prefabPickUp);
                 Destroy(this.gameObject);
             }
             else
             {
-                Debug.Log("Pick up Random Material");
-                ToolBarController toolBarController = GameObject.Find("Canvas/InventoryPanel").GetComponent<ToolBarController>();
-                toolBarController.SetImageItem(spritePickUpObject, true);
+                InventoryController inventoryController = GameObject.Find("Canvas/InventoryPanel").GetComponent<InventoryController>();
+                inventoryController.SetItem(spritePickUpObject, 1, prefabPickUp);
                 Destroy(this.gameObject);
             }
         }

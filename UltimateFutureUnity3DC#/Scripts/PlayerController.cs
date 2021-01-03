@@ -28,6 +28,8 @@ public class PlayerController : MonoBehaviour
     //Variables To check is gun
     public int IsGun = 0;
     public GameObject HandWithGun;
+
+    public GameObject HandWitObject;
     // Start is called before the first frame update
     void Start()
     {

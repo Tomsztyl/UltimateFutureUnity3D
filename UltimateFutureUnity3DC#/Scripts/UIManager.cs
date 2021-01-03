@@ -8,6 +8,15 @@ public class UIManager : MonoBehaviour
     [SerializeField] private GameObject messagePanel;
     [SerializeField] private Text messagePanelTxt;
 
+    //Variable Controller Console
+    [SerializeField] private GameObject console;
+    [SerializeField] private KeyCode keyControlConsole = KeyCode.BackQuote;
+
+    private void Update()
+    {
+        EnableConsole();
+    }
+
     public void ManagerMessagePanel(string textMessagePanel, bool isInColider)
     {
         if (isInColider==true)
@@ -19,6 +28,24 @@ public class UIManager : MonoBehaviour
         {
             messagePanel.SetActive(false);
             messagePanelTxt.text = textMessagePanel;
+        }
+    }
+    private void EnableConsole()
+    {
+        if (Input.GetKeyDown(keyControlConsole))
+        {
+            if (console.active == false)
+            {
+                Screen.lockCursor = false;
+                Cursor.visible = true;
+                console.SetActive(true);
+            }
+            else
+            {
+                Screen.lockCursor = true;
+                Cursor.visible = false;
+                console.SetActive(false);
+            }
         }
     }
 }

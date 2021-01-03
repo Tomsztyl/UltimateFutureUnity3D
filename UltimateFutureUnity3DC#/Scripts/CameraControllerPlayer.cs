@@ -5,8 +5,8 @@ using UnityEngine;
 public class CameraControllerPlayer : MonoBehaviour
 {
     //Variable Select Camera
-    [SerializeField] private bool thirdCamera = false;
-    [SerializeField] private bool firstCamera = false;
+    [SerializeField] public bool thirdCamera = false;
+    [SerializeField] public bool firstCamera = false;
 
     [SerializeField] private GameObject thirdCameraPref;
     [SerializeField] private GameObject firstCameraPref;
@@ -52,7 +52,12 @@ public class CameraControllerPlayer : MonoBehaviour
 
     private void SelectCamera()
     {
-        if (thirdCamera==true)
+        if (thirdCamera==false&&firstCamera==false)
+        {
+            thirdCameraPref.SetActive(false);
+            firstCameraPref.SetActive(false);
+        }
+        else if (thirdCamera==true)
         {
             thirdCameraPref.SetActive(true);
             firstCamera =DeActiveCameraSelect(firstCameraPref);

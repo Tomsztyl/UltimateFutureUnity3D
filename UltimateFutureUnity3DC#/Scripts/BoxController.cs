@@ -80,7 +80,7 @@ public class BoxController : MonoBehaviour
         rigidbody.useGravity = false;
         boxCollider.isTrigger = true;
         navMeshObstacle.enabled = false;
-        Destroy(this.gameObject,60f);
+        Destroy(this.gameObject);
     }
     private void InstantiateRandomItemBox()
     {
@@ -100,11 +100,11 @@ public class BoxController : MonoBehaviour
     {
         startPatricles.SetActive(false);
         box001.SetActive(false);
-        destroy_box.SetActive(true);
+        Instantiate(destroy_box, transform.position, Quaternion.identity);
 
         //Set Bang Animation
-        Animator anim = GetComponent<Animator>();
-        anim.SetTrigger("isBang");
+        //Animator anim = GetComponent<Animator>();
+        //anim.SetTrigger("isBang");
     }
     private void OnDrawGizmosSelected()
     {
