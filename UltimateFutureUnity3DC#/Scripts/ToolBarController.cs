@@ -99,6 +99,8 @@ public class ToolBarController : MonoBehaviour
             if (Input.GetKeyDown(slot_InventoryKeyToolBar[i]))
             {
                 slot_InventoryButtonToolBar[i].Select();
+                slot_InventoryButtonToolBar[i].onClick.Invoke();
+                //slot_InventoryButtonToolBar[i].interactable = true;
                 GetItemToCharacterHand(slot_InventoryToolBarSprite[i].sprite,i);
                 //Debug.Log("Click Button: " + slot_InventoryKeyToolBar[i]);
                 //slot_InventoryButtonToolBar[i].onClick = true;

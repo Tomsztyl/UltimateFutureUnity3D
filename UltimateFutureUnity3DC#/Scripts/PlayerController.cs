@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class PlayerController : MonoBehaviour
 {
@@ -24,6 +25,13 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float rotationSpeedSprintingToAdd = 10f;
     [SerializeField] private KeyCode sprintKey = KeyCode.LeftShift;
 
+    //Default Setting Junp Player
+    [SerializeField] private KeyCode jumpKey = KeyCode.Space;
+    [SerializeField] private float distanceToGround;
+    [SerializeField] private float jumpAceleration=100f;
+    [SerializeField] private CapsuleCollider capsuleCollider;
+    [SerializeField] private Rigidbody rigidbody;
+
 
     //Variables To check is gun
     public int IsGun = 0;
@@ -34,6 +42,8 @@ public class PlayerController : MonoBehaviour
     void Start()
     {
         anim = GetComponent<Animator>();
+        capsuleCollider = GetComponent<CapsuleCollider>();
+        rigidbody = GetComponent<Rigidbody>();
     }
 
     // Update is called once per frame
@@ -41,6 +51,7 @@ public class PlayerController : MonoBehaviour
     {
         PlayerMoveSelectGunCharacter();
         PlayerAimGunStanding();
+        PlayerJump();
     }
     private void PlayerMoveSelectGunCharacter()
     {
@@ -82,6 +93,7 @@ public class PlayerController : MonoBehaviour
         translation *= Time.deltaTime;
 
         rotation *= Time.deltaTime;
+
         transform.Translate(0, 0, translation);
         transform.Rotate(0, rotation, 0);
 
@@ -178,6 +190,37 @@ public class PlayerController : MonoBehaviour
                 speedGunAim -= speedSprintToAdd ;
                 rotationSpeedGunAim -= rotationSpeedSprintingToAdd;
             }
+        }
+    }
+    private bool IsGrounded()
+    {
+        return Physics.Raycast(transform.position, -Vector3.up, (float)(distanceToGround + 0.1));
+    }
+    private void PlayerJump()
+    {
+        if (Input.GetKeyDown(jumpKey) && IsGrounded())
+        {
+            Debug.LogWarning("Jump");
+            rigidbody.AddForce(new Vector3(0, jumpAceleration, 0), ForceMode.Impulse);
+            anim.SetBool("isJumping", true);
+        }
+        else
+        {
+            CheckIsGrounded();
+        }
+
+
+    }
+    private void CheckIsGrounded()
+    {
+        if (IsGrounded())
+        {
+            anim.SetBool("isJumping", false);
+            Debug.LogWarning("Is Ground");
+        }
+        else
+        {
+            Debug.LogError("No Ground");
         }
     }
 }

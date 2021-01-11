@@ -17,37 +17,15 @@ public class CameraControllerPlayer : MonoBehaviour
     private float SmoothFactory=0.5f;
     [SerializeField] private bool lookAtPlayer = false;
     [SerializeField] private bool rotateAroundPlayer = true;
+    [SerializeField] private bool rotateAbovePlayer = true;
     [SerializeField] private float rotationSpeed = 5.0f;
 
-    //[SerializeField] private float speedHorizontalCamera = 2.0f;
-    //[SerializeField] private float speedVerticalCamera = 2.0f;
-    //[SerializeField] private float yawCamera = 0.0f;
-    //[SerializeField] private float pitchCamera = 0.0f;
 
-
-    private void Start()
-    {
-        //cameraOffset = thirdCameraPref.transform.position - playerTransform.position;
-    }
     private void LateUpdate()
     {
-        if (rotateAroundPlayer)
-        {
-            Quaternion camTurnAngle = Quaternion.AngleAxis(Input.GetAxis("Mouse X") * rotationSpeed, Vector3.up);
-
-            cameraOffset = camTurnAngle * cameraOffset;
-        }
-
-        Vector3 newPos = playerTransform.position + cameraOffset;
-        thirdCameraPref.transform.position = Vector3.Slerp(thirdCameraPref.transform.position, newPos, SmoothFactory);
-
-        if (lookAtPlayer)
-            thirdCameraPref.transform.LookAt(playerTransform);
-    }
-
-    private void Update()
-    {
         SelectCamera();
+        RotateCameraAround();
+        RotateCameraAbove();
     }
 
     private void SelectCamera()
@@ -61,13 +39,11 @@ public class CameraControllerPlayer : MonoBehaviour
         {
             thirdCameraPref.SetActive(true);
             firstCamera =DeActiveCameraSelect(firstCameraPref);
-            RotateCameraWithMouse(thirdCameraPref);
         }
         else if (firstCamera==true)
         {
             firstCameraPref.SetActive(true);
             thirdCamera= DeActiveCameraSelect(thirdCameraPref);
-            RotateCameraWithMouse(firstCameraPref);
         }
         else
         {
@@ -79,20 +55,36 @@ public class CameraControllerPlayer : MonoBehaviour
         deActiveCameraObj.SetActive(false);
         return false;
     }
-    private void RotateCameraWithMouse(GameObject selectCameraRotate)
+    private void RotateCameraAround()
     {
-        //yawCamera += speedHorizontalCamera * Input.GetAxis("Mouse X");
-        //pitchCamera -= speedVerticalCamera * Input.GetAxis("Mouse Y");
+        if (rotateAroundPlayer)
+        {
+            Quaternion camTurnAngle = Quaternion.AngleAxis(Input.GetAxis("Mouse X") * rotationSpeed, Vector3.up);
 
-       // selectCameraRotate.transform.eulerAngles = new Vector3(pitchCamera, yawCamera, 0.0f);
-        //PlayerController playerController = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>();
+            cameraOffset = camTurnAngle * cameraOffset;
+        }
 
-        //if (playerController.GetRotationAnimationDef()!=0)
-        //{
-        //    //Debug.Log("Rotation is set: "+ new Vector3(0.0f,selectCameraRotate.transform.eulerAngles.y,selectCameraRotate.transform.eulerAngles.y)); 
-        //    selectCameraRotate.transform.eulerAngles=new Vector3(0.0f, 0.0f, 0.0f);
-        //}
-        //selectCameraRotate.transform.LookAt(transform.position);
-        //selectCameraRotate.transform.LookAt(transform.position, Vector3.forward);
+        Vector3 newPos = playerTransform.position + cameraOffset;
+        thirdCameraPref.transform.position = Vector3.Slerp(thirdCameraPref.transform.position, newPos, SmoothFactory);
+
+        if (lookAtPlayer)
+           thirdCameraPref.transform.LookAt(playerTransform);
+    }
+    private void RotateCameraAbove()
+    {
+
+        if (rotateAbovePlayer)
+        {
+
+            Quaternion camTurnAngle = Quaternion.AngleAxis(Input.GetAxis("Mouse Y") * rotationSpeed, Vector3.left);
+
+            cameraOffset = camTurnAngle * cameraOffset;
+        }
+
+        Vector3 newPos = playerTransform.position + cameraOffset;
+        thirdCameraPref.transform.position = Vector3.Slerp(thirdCameraPref.transform.position, newPos, SmoothFactory);
+
+        if (lookAtPlayer)
+            thirdCameraPref.transform.LookAt(playerTransform);
     }
 }
